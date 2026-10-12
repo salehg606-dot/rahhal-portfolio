@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rahhal – Business Intelligence & Information System Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F7F6;--card:#fff;--ink:#12202A;--mut:#5A6B73;--pri:#0F5C57;--acc:#E3A21A;--line:#D5E0DE;--code:#0E1F26;--codeink:#CFE8E4;--bad:#C4503A;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C171B;--card:#132329;--ink:#E6F0EE;--mut:#93A8A8;--pri:#4FC1B5;--acc:#F0B93A;--line:#24383E;--code:#081114;--bad:#E8806B}}
+:root[data-theme="dark"]{--bg:#0C171B;--card:#132329;--ink:#E6F0EE;--mut:#93A8A8;--pri:#4FC1B5;--acc:#F0B93A;--line:#24383E;--code:#081114;--bad:#E8806B}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans",system-ui,sans-serif}
+.w{max-width:980px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:Sora,system-ui,sans-serif;line-height:1.2;margin:0}
+header{padding:56px 0 32px;border-bottom:4px solid var(--acc)}
+h1{font-size:clamp(34px,7vw,64px);letter-spacing:-.02em}
+.sub{max-width:62ch;color:var(--mut);margin:14px 0 22px;font-size:18px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.tags li{border:1px solid var(--pri);color:var(--pri);border-radius:99px;padding:3px 12px;font-size:14px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;margin-top:28px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+.facts div{padding:14px 16px;border-inline-end:1px solid var(--line);font-size:14px;color:var(--mut)}
+.facts b{display:block;font:700 22px Sora,sans-serif;color:var(--ink)}
+section{padding:44px 0 8px}
+h2{font-size:28px;margin-bottom:6px}
+.lead{color:var(--mut);margin:0 0 20px;max-width:65ch}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{font:500 14px "IBM Plex Sans",sans-serif;padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--pri);color:#fff;border-color:var(--pri)}
+.tabs button:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.board{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.bar-top{display:flex;justify-content:space-between;font-size:13px;color:var(--mut);margin-bottom:12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.kpi{border-inline-start:4px solid var(--acc);padding:4px 10px;background:var(--bg);border-radius:4px}
+.kpi small{color:var(--mut);display:block;font-size:12px}.kpi b{font:700 20px Sora,sans-serif}.kpi i{font-style:normal;color:var(--pri);font-size:12px;margin-inline-start:6px}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.charts{grid-template-columns:1fr}}
+.ch{background:var(--bg);border-radius:8px;padding:12px}.ch h3{font-size:14px;margin-bottom:10px}
+svg{width:100%;height:auto;display:block}
+.ml{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-top:4px}
+.br{display:grid;grid-template-columns:90px 1fr 44px;gap:8px;align-items:center;font-size:13px;margin:7px 0}
+.br span:nth-child(2){background:var(--line);border-radius:4px;height:14px}.br em{display:block;height:100%;background:var(--pri);border-radius:4px}
+.br span:last-child{text-align:end;color:var(--mut)}
+.model{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.tb{background:var(--card);border:1px solid var(--line);border-radius:8px;font-size:13px;overflow:hidden}
+.tb h3{font-size:14px;background:var(--pri);color:#fff;padding:6px 12px}.tb p{margin:0;padding:5px 12px;border-top:1px solid var(--line)}.tb .k{color:var(--acc);font-weight:500}
+pre{background:var(--code);color:var(--codeink);padding:16px;border-radius:10px;overflow-x:auto;font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;margin:0}
+pre .k{color:#F0B93A}pre .c{color:#7FA3A0}
+.xl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:720px}
+th{background:#1D6F42;color:#fff;text-align:start;padding:7px 10px;font-weight:500}
+td{padding:6px 10px;border-top:1px solid var(--line)}tr:nth-child(even) td{background:var(--bg)}
+td.n{text-align:end;font-variant-numeric:tabular-nums}
+.st-c{color:var(--pri)}.st-x{color:var(--bad)}
+.note{font-size:13px;color:var(--mut);margin-top:10px}
+footer{padding:40px 0 48px;color:var(--mut);font-size:14px}
+</style>
+</head>
+<body>
+<header><div class="w">
+<h1>Rahhal – رحال</h1>
+<p class="sub">A Saudi travel platform designed with information systems and business intelligence. Graduation project, 6 months, team of 5.</p>
+<ul class="tags"><li>Power BI</li><li>SQL</li><li>Microsoft Excel</li><li>Power Query</li></ul>
+<div class="facts"><div><b>11</b>Excel datasets</div><div><b>7</b>relational tables</div><div><b>24+</b>SQL queries</div><div><b>5 / 10</b>dashboards / pages</div><div><b>13+</b>KPIs</div></div>
+</div></header>
+
+<main class="w">
+<section>
+<h2>Power BI dashboards</h2>
+<p class="lead">Sales performance, customer behavior, destination trends and operational efficiency, built on cleaned Power Query datasets.</p>
+<div class="tabs" role="tablist" id="tabs"></div>
+<div class="board" id="board"></div>
+<p class="note">Illustrative mock-up with sample data.</p>
+</section>
+
+<section>
+<h2>Data model</h2>
+<p class="lead">Seven relational tables linked by keys (PK = primary key, FK = foreign key).</p>
+<div class="model">
+<div class="tb"><h3>Customers</h3><p><span class="k">PK</span> customer_id</p><p>full_name, city, segment</p><p>signup_date</p></div>
+<div class="tb"><h3>Bookings</h3><p><span class="k">PK</span> booking_id</p><p><span class="k">FK</span> customer_id, destination_id, package_id</p><p>booking_date, nights, total_amount, status, channel</p></div>
+<div class="tb"><h3>Destinations</h3><p><span class="k">PK</span> destination_id</p><p>destination_name, region, season</p></div>
+<div class="tb"><h3>Packages</h3><p><span class="k">PK</span> package_id</p><p><span class="k">FK</span> destination_id</p><p>package_type, base_price</p></div>
+<div class="tb"><h3>Payments</h3><p><span class="k">PK</span> payment_id</p><p><span class="k">FK</span> booking_id</p><p>method, paid_amount, paid_date</p></div>
+<div class="tb"><h3>Reviews</h3><p><span class="k">PK</span> review_id</p><p><span class="k">FK</span> booking_id</p><p>rating, review_date</p></div>
+<div class="tb"><h3>Support_Tickets</h3><p><span class="k">PK</span> ticket_id</p><p><span class="k">FK</span> booking_id</p><p>issue_type, opened_at, resolved_at</p></div>
+</div>
+</section>
+
+<section>
+<h2>SQL queries</h2>
+<p class="lead">Retrieval, filtering and analysis. Four of the 24+ queries.</p>
+<div class="tabs" role="tablist" id="sqltabs"></div>
+<pre id="sql"></pre>
+</section>
+
+<section>
+<h2>Excel datasets</h2>
+<p class="lead">Raw bookings sheet before cleaning in Power Query (about 6,200 rows per dataset).</p>
+<div class="xl"><table>
+<thead><tr><th>booking_id</th><th>customer</th><th>city</th><th>destination</th><th>package</th><th>booking_date</th><th>nights</th><th>amount_sar</th><th>status</th></tr></thead>
+<tbody id="xl"></tbody></table></div>
+<p class="note">Sample rows with fictional names and values.</p>
+</section>
+</main>
+
+<footer><div class="w">Rahhal – Business Intelligence & Information System Project. All data shown is fictional sample data.</div></footer>
+
+<script>
+var M=["J","F","M","A","M","J","J","A","S","O","N","D"];
+var D={
+"Sales":{k:[["Total revenue","SAR 4.82M","+12.4%"],["Bookings","6,214","+8.1%"],["Avg. booking value","SAR 776","+3.9%"],["Conversion rate","3.6%","+0.4 pt"]],
+lt:"Monthly revenue (SAR thousand)",lv:[290,310,360,380,330,300,420,450,380,410,470,520],
+bt:"Revenue by destination (SAR thousand)",bd:[["AlUla",412],["Abha",366],["Jeddah",351],["Riyadh",298],["NEOM",187]]},
+"Customers":{k:[["Active customers","4,180","+6.7%"],["Repeat rate","31%","+2.1 pt"],["Avg. rating","4.4 / 5","+0.1"],["Satisfaction (CSAT)","87%","+3 pt"]],
+lt:"New customers per month",lv:[210,230,260,300,270,240,330,360,310,340,380,420],
+bt:"Customers by segment (%)",bd:[["Families",38],["Couples",24],["Groups",20],["Solo",18]]},
+"Operations":{k:[["Cancellation rate","7.8%","-1.2 pt"],["Avg. ticket resolution","5.2 h","-0.8 h"],["Payment success","96.4%","+0.9 pt"],["On-time confirmation","92%","+2 pt"]],
+lt:"Support tickets per month",lv:[180,170,160,175,190,210,200,185,170,160,150,145],
+bt:"Cancellations by channel (%)",bd:[["Mobile app",6],["Website",8],["Call center",11],["Agents",9]]}
+};
+function line(v){var mx=Math.max.apply(null,v)*1.1,w=300,h=110,p=v.map(function(y,i){return[i*w/11,h-y/mx*h]});
+var pts=p.map(function(a){return a[0].toFixed(1)+","+a[1].toFixed(1)}).join(" ");
+return '<svg viewBox="0 0 300 110" role="img" aria-label="Line chart"><polygon points="0,110 '+pts+' 300,110" fill="var(--pri)" opacity=".15"/><polyline points="'+pts+'" fill="none" stroke="var(--pri)" stroke-width="2.5"/>'+p.map(function(a){return '<circle cx="'+a[0]+'" cy="'+a[1]+'" r="2.5" fill="var(--acc)"/>'}).join("")+'</svg><div class="ml">'+M.map(function(m){return"<span>"+m+"</span>"}).join("")+'</div>'}
+function bars(d){var mx=Math.max.apply(null,d.map(function(x){return x[1]}));return d.map(function(x){return '<div class="br"><span>'+x[0]+'</span><span><em style="width:'+(x[1]/mx*100)+'%"></em></span><span>'+x[1]+'</span></div>'}).join("")}
+function show(n){var d=D[n];document.getElementById("board").innerHTML='<div class="bar-top"><span>Rahhal – '+n+' dashboard</span><span>FY 2025 · All regions</span></div><div class="kpis">'+d.k.map(function(k){return '<div class="kpi"><small>'+k[0]+'</small><b>'+k[1]+'</b><i>'+k[2]+'</i></div>'}).join("")+'</div><div class="charts"><div class="ch"><h3>'+d.lt+'</h3>'+line(d.lv)+'</div><div class="ch"><h3>'+d.bt+'</h3>'+bars(d.bd)+'</div></div>';
+tabs("tabs",Object.keys(D),n,show)}
+function tabs(id,names,cur,fn){var el=document.getElementById(id);el.innerHTML="";names.forEach(function(x){var b=document.createElement("button");b.textContent=x;b.setAttribute("role","tab");b.setAttribute("aria-selected",x===cur);b.onclick=function(){fn(x)};el.appendChild(b)})}
+var Q={
+"Revenue by destination":'<span class="c">-- Monthly confirmed revenue per destination</span>\n<span class="k">SELECT</span> d.destination_name,\n       <span class="k">FORMAT</span>(b.booking_date, \'yyyy-MM\') <span class="k">AS</span> month,\n       <span class="k">SUM</span>(b.total_amount) <span class="k">AS</span> revenue,\n       <span class="k">COUNT</span>(*) <span class="k">AS</span> bookings\n<span class="k">FROM</span> Bookings b\n<span class="k">JOIN</span> Destinations d <span class="k">ON</span> d.destination_id = b.destination_id\n<span class="k">WHERE</span> b.status = \'Confirmed\'\n<span class="k">GROUP BY</span> d.destination_name, <span class="k">FORMAT</span>(b.booking_date, \'yyyy-MM\')\n<span class="k">ORDER BY</span> month, revenue <span class="k">DESC</span>;',
+"Repeat customers":'<span class="c">-- Customers with 2+ confirmed bookings</span>\n<span class="k">SELECT</span> c.customer_id, c.full_name, c.segment,\n       <span class="k">COUNT</span>(b.booking_id) <span class="k">AS</span> trips,\n       <span class="k">SUM</span>(b.total_amount) <span class="k">AS</span> lifetime_value\n<span class="k">FROM</span> Customers c\n<span class="k">JOIN</span> Bookings b <span class="k">ON</span> b.customer_id = c.customer_id\n<span class="k">WHERE</span> b.status = \'Confirmed\'\n<span class="k">GROUP BY</span> c.customer_id, c.full_name, c.segment\n<span class="k">HAVING COUNT</span>(b.booking_id) >= 2\n<span class="k">ORDER BY</span> lifetime_value <span class="k">DESC</span>;',
+"Cancellation by channel":'<span class="c">-- Cancellation rate per booking channel</span>\n<span class="k">SELECT</span> channel,\n       <span class="k">COUNT</span>(*) <span class="k">AS</span> total_bookings,\n       <span class="k">SUM</span>(<span class="k">CASE WHEN</span> status = \'Cancelled\' <span class="k">THEN</span> 1 <span class="k">ELSE</span> 0 <span class="k">END</span>) <span class="k">AS</span> cancelled,\n       <span class="k">ROUND</span>(100.0 * <span class="k">SUM</span>(<span class="k">CASE WHEN</span> status = \'Cancelled\' <span class="k">THEN</span> 1 <span class="k">ELSE</span> 0 <span class="k">END</span>)\n             / <span class="k">COUNT</span>(*), 1) <span class="k">AS</span> cancel_rate_pct\n<span class="k">FROM</span> Bookings\n<span class="k">GROUP BY</span> channel\n<span class="k">ORDER BY</span> cancel_rate_pct <span class="k">DESC</span>;',
+"Top 3 per region":'<span class="c">-- Top 3 destinations by revenue in each region</span>\n<span class="k">WITH</span> ranked <span class="k">AS</span> (\n  <span class="k">SELECT</span> d.region, d.destination_name,\n         <span class="k">SUM</span>(b.total_amount) <span class="k">AS</span> revenue,\n         <span class="k">ROW_NUMBER</span>() <span class="k">OVER</span> (<span class="k">PARTITION BY</span> d.region\n                            <span class="k">ORDER BY SUM</span>(b.total_amount) <span class="k">DESC</span>) <span class="k">AS</span> rnk\n  <span class="k">FROM</span> Bookings b\n  <span class="k">JOIN</span> Destinations d <span class="k">ON</span> d.destination_id = b.destination_id\n  <span class="k">WHERE</span> b.status = \'Confirmed\'\n  <span class="k">GROUP BY</span> d.region, d.destination_name\n)\n<span class="k">SELECT</span> region, destination_name, revenue\n<span class="k">FROM</span> ranked <span class="k">WHERE</span> rnk <= 3;'
+};
+function sql(n){document.getElementById("sql").innerHTML=Q[n];tabs("sqltabs",Object.keys(Q),n,sql)}
+var R=[["BK-10231","Customer 0412","Riyadh","AlUla","Heritage Tour","2025-01-14",3,2850,"Confirmed"],["BK-10232","Customer 1177","Jeddah","Abha","Mountain Escape","2025-01-15",4,3120,"Confirmed"],["BK-10233","Customer 0089","Dammam","Jeddah","Red Sea Weekend","2025-01-15",2,1640,"Cancelled"],["BK-10234","Customer 2054","Riyadh","NEOM","Adventure Pack","2025-01-17",5,6400,"Confirmed"],["BK-10235","Customer 0731","Madinah","Taif","Family Retreat","2025-01-18",3,2290,"Confirmed"],["BK-10236","Customer 1620","Khobar","AlUla","Heritage Tour","2025-01-19",3,2850,"Confirmed"],["BK-10237","Customer 0345","Buraydah","Riyadh","City Break","2025-01-21",2,1480,"Cancelled"],["BK-10238","Customer 1893","Jeddah","Abha","Mountain Escape","2025-01-22",4,3120,"Confirmed"]];
+document.getElementById("xl").innerHTML=R.map(function(r){return"<tr>"+r.map(function(c,i){var cl=(i===6||i===7)?' class="n"':(i===8?(c==="Confirmed"?' class="st-c"':' class="st-x"'):"");return"<td"+cl+">"+(i===7?c.toLocaleString("en-US"):c)+"</td>"}).join("")+"</tr>"}).join("");
+show("Sales");sql("Revenue by destination");
+</script>
+</body>
+</html>
