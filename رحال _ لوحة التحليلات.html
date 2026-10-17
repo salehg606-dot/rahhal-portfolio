@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رحال | لوحة التحليلات</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#f3f6f6;--surface:#fff;--ink:#12303a;--muted:#5d747b;--line:#d5e0e2;--teal:#0e7c86;--amber:#d9951b;--teal-soft:#d9eef0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1d22;--surface:#142a31;--ink:#e6f1f2;--muted:#93aab0;--line:#24404a;--teal:#3fc1cc;--amber:#f0b445;--teal-soft:#183941}}
+:root[data-theme="dark"]{--bg:#0d1d22;--surface:#142a31;--ink:#e6f1f2;--muted:#93aab0;--line:#24404a;--teal:#3fc1cc;--amber:#f0b445;--teal-soft:#183941}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",Tahoma,Arial,sans-serif;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 16px 40px}
+header{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:end;margin-bottom:16px}
+h1{font-size:26px;margin:0;font-weight:700}
+.sub{color:var(--muted);font-size:14px;margin:2px 0 0}
+select{font:inherit;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+nav{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:16px}
+nav button{font:inherit;background:none;border:0;color:var(--muted);padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--teal);border-color:var(--teal);font-weight:700}
+button:focus-visible,select:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px}
+.kpi small{color:var(--muted);display:block;font-size:13px}
+.kpi b{font-size:28px;font-weight:700}
+.kpi span{font-size:12px;color:var(--teal)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0}
+.card h2{font-size:16px;margin:0 0 12px}
+.row{display:grid;grid-template-columns:90px 1fr 56px;gap:8px;align-items:center;margin:8px 0;font-size:14px}
+.bar{height:14px;background:var(--teal-soft);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal);transition:width .35s}
+.row em{font-style:normal;color:var(--muted);text-align:start}
+svg{width:100%;height:auto;display:block}
+.note{color:var(--muted);font-size:12px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div><h1>رحال: لوحة التحليلات</h1><p class="sub">نموذج تجريبي لمشروع التخرج، بيانات افتراضية</p></div>
+<label>المنطقة <select id="city"><option value="1">كل المناطق</option><option value=".38">الرياض</option><option value=".31">جدة</option><option value=".19">الدمام</option><option value=".12">أخرى</option></select></label>
+</header>
+<nav role="tablist" id="tabs"></nav>
+<main id="view"></main>
+<p class="note">الأرقام مولّدة لعرض شكل اللوحة فقط، وتُستبدل ببيانات المشروع الفعلية عند الربط مع قاعدة SQL.</p>
+</div>
+<script>
+const fmt=n=>Math.round(n).toLocaleString("ar-SA");
+const D={
+sales:{t:"المبيعات",k:[["إجمالي المبيعات (ر.س)",4820000,1,"+12٪ عن الفترة السابقة"],["عدد الحجوزات",18400,1,"+8٪"],["متوسط قيمة الحجز (ر.س)",262,0,"+3٪"]],
+ b:{t:"المبيعات حسب نوع الخدمة",d:[["طيران",1900000],["فنادق",1550000],["باقات سياحية",890000],["فعاليات",480000]]},
+ l:{t:"المبيعات الشهرية (ر.س)",d:[310,340,420,380,450,520,610,580,470,430,500,610]}},
+cust:{t:"سلوك العملاء",k:[["عملاء نشطون",9300,1,"+5٪"],["نسبة العملاء المتكررين ٪",41,0,"+2 نقطة"],["معدل الإلغاء ٪",7.4,0,"−0.6 نقطة"]],
+ b:{t:"العملاء حسب الفئة العمرية",d:[["١٨–٢٤",1400],["٢٥–٣٤",3900],["٣٥–٤٤",2600],["٤٥+",1400]]},
+ l:{t:"عملاء جدد شهريًا",d:[520,540,610,590,640,700,820,790,660,620,680,790]}},
+dest:{t:"اتجاهات الوجهات",k:[["أكثر وجهة طلبًا","العلا",0,"نمو ١٨٪"],["عدد الوجهات النشطة",36,0,"+4 وجهات"],["نسبة الحجز المحلي ٪",63,0,"+5 نقاط"]],
+ b:{t:"الأعلى حجزًا",d:[["العلا",3100],["أبها",2700],["جدة",2400],["نيوم",1500],["الطائف",1300]]},
+ l:{t:"حجوزات الوجهات الجبلية موسميًا",d:[210,230,260,300,520,780,910,850,420,300,250,240]}},
+ops:{t:"الكفاءة التشغيلية",k:[["زمن تأكيد الحجز (دقيقة)",4.2,0,"−0.8 دقيقة"],["رضا العملاء (من ٥)",4.4,0,"+0.1"],["نسبة حل الطلبات من أول تواصل ٪",78,0,"+3 نقاط"]],
+ b:{t:"طلبات الدعم حسب النوع",d:[["تعديل حجز",1900],["استرداد",1100],["استفسار",2300],["شكوى",420]]},
+ l:{t:"متوسط زمن الاستجابة (دقيقة)",d:[6.1,5.8,5.5,5.2,5,4.9,4.6,4.5,4.4,4.3,4.2,4.2]}}
+};
+const M=["ينا","فبر","مار","أبر","ماي","يون","يول","أغس","سبت","أكت","نوف","ديس"];
+let cur="sales";
+const tabs=document.getElementById("tabs"),view=document.getElementById("view"),city=document.getElementById("city");
+Object.keys(D).forEach(k=>{const b=document.createElement("button");b.textContent=D[k].t;b.dataset.k=k;b.setAttribute("role","tab");b.onclick=()=>{cur=k;draw()};tabs.appendChild(b)});
+city.onchange=draw;
+function line(d,f,scale){const v=scale?d.map(x=>x*f):d,mx=Math.max(...v),mn=Math.min(...v),W=480,H=170,p=14;
+const pts=v.map((y,i)=>[p+i*(W-2*p)/11,H-p-20-(y-mn)/((mx-mn)||1)*(H-2*p-20)]);
+return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="رسم خطي"><polyline fill="none" stroke="var(--teal)" stroke-width="2.5" points="${pts.map(q=>q.join(",")).join(" ")}"/>${pts.map(q=>`<circle cx="${q[0]}" cy="${q[1]}" r="3" fill="var(--amber)"/>`).join("")}${M.map((m,i)=>i%2?"":`<text x="${pts[i][0]}" y="${H-3}" font-size="11" text-anchor="middle" fill="var(--muted)">${m}</text>`).join("")}</svg>`}
+function draw(){const f=+city.value,x=D[cur],scale=cur!=="ops"&&f<1;
+tabs.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.k===cur));
+const kp=x.k.map(([n,v,s,c])=>`<div class="kpi"><small>${n}</small><b>${typeof v==="string"?v:(s?fmt(v*f):v.toLocaleString("ar-SA"))}</b><br><span>${c}</span></div>`).join("");
+const mx=Math.max(...x.b.d.map(r=>r[1]));
+const bars=x.b.d.map(([n,v])=>`<div class="row"><span>${n}</span><div class="bar"><i style="width:${v/mx*100}%"></i></div><em>${fmt(scale?v*f:v)}</em></div>`).join("");
+view.innerHTML=`<div class="kpis">${kp}</div><div class="grid"><div class="card"><h2>${x.b.t}</h2>${bars}</div><div class="card"><h2>${x.l.t}</h2>${line(x.l.d,f,scale)}</div></div>`}
+draw();
+</script>
+</body>
+</html>
