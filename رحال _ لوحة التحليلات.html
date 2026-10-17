@@ -35,6 +35,10 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--amber);outline
 .bar i{display:block;height:100%;background:var(--teal);transition:width .35s}
 .row em{font-style:normal;color:var(--muted);text-align:start}
 svg{width:100%;height:auto;display:block}
+.docs{margin-top:12px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.docs h2{margin:0}.docs p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.docs a{background:var(--teal);color:var(--bg);text-decoration:none;font-weight:700;padding:8px 16px;border-radius:6px}
+.docs a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .note{color:var(--muted);font-size:12px;margin-top:16px}
 </style>
 </head>
@@ -46,6 +50,7 @@ svg{width:100%;height:auto;display:block}
 </header>
 <nav role="tablist" id="tabs"></nav>
 <main id="view"></main>
+<section class="card docs"><div><h2>مستندات المشروع</h2><p>دليل بناء الداشبورد: الربط مع SQL، نموذج العلاقات، معادلات DAX، واستعلامات التغذية.</p></div><a href="https://claude.ai/artifact/7yq9DS7o7HybnDSfdA7u76" target="_blank" rel="noopener">افتح الدليل</a></section>
 <p class="note">الأرقام مولّدة لعرض شكل اللوحة فقط، وتُستبدل ببيانات المشروع الفعلية عند الربط مع قاعدة SQL.</p>
 </div>
 <script>
